@@ -37,19 +37,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiResponseNetworkData"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Returns unauthorized/forbidden response code"
-          },
           "500": {
             "description": "returns error response(success=false,body=null) with messageCodes",
             "content": {
@@ -59,6 +46,19 @@
                   "messageCodes": [
                     "unknown.error"
                   ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returns unauthorized/forbidden response code"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseNetworkData"
                 }
               }
             }
@@ -98,17 +98,17 @@
           "timeZone": {
             "type": "string"
           },
-          "productTypes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "organizationId": {
             "type": "string"
           },
           "url": {
             "type": "string"
+          },
+          "productTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -238,6 +238,12 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
       }
     }
   }
