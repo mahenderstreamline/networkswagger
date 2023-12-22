@@ -37,6 +37,19 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseNetworkData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returns unauthorized/forbidden response code"
+          },
           "500": {
             "description": "returns error response(success=false,body=null) with messageCodes",
             "content": {
@@ -49,16 +62,58 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/network/devices/clients/{storeNumber}/filter/mobiledevices/{serialNumber}": {
+      "get": {
+        "tags": [
+          "network-api"
+        ],
+        "summary": "Returns network data(network details, devices and clients) by store number",
+        "operationId": "getNetworksFilterMobileDevices",
+        "parameters": [
+          {
+            "name": "storeNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           },
-          "401": {
-            "description": "Returns unauthorized/forbidden response code"
-          },
+          {
+            "name": "serialNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/ApiResponseNetworkData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returns unauthorized/forbidden response code"
+          },
+          "500": {
+            "description": "returns error response(success=false,body=null) with messageCodes",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "messageCodes": [
+                    "unknown.error"
+                  ]
                 }
               }
             }
@@ -86,6 +141,30 @@
           }
         }
       },
+      "IndicatorInfo": {
+        "type": "object",
+        "properties": {
+          "indicator": {
+            "type": "string",
+            "enum": [
+              "RED",
+              "GREEN"
+            ]
+          },
+          "reasonCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReasonCode"
+            }
+          },
+          "indicatorCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReasonCode"
+            }
+          }
+        }
+      },
       "Network": {
         "type": "object",
         "properties": {
@@ -98,10 +177,10 @@
           "timeZone": {
             "type": "string"
           },
-          "organizationId": {
+          "url": {
             "type": "string"
           },
-          "url": {
+          "organizationId": {
             "type": "string"
           },
           "productTypes": {
@@ -139,7 +218,7 @@
           "lastSeen": {
             "type": "string"
           },
-          "manufacture": {
+          "manufacturer": {
             "type": "string"
           },
           "os": {
@@ -169,6 +248,24 @@
           },
           "recentDeviceConnection": {
             "type": "string"
+          },
+          "deviceTypePrediction": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "IPHONE_OR_IPAD",
+              "WATCH_TOWER",
+              "UNKNOWN",
+              "PRINTER"
+            ]
+          },
+          "switchPort": {
+            "type": "string"
+          },
+          "indicatorInfo": {
+            "$ref": "#/components/schemas/IndicatorInfo"
           },
           "additionalData": {
             "type": "object",
@@ -231,10 +328,53 @@
           "status": {
             "type": "string"
           },
+          "publicIp": {
+            "type": "string"
+          },
+          "lanIp": {
+            "type": "string"
+          },
+          "ipType": {
+            "type": "string"
+          },
+          "primaryDns": {
+            "type": "string"
+          },
+          "secondaryDns": {
+            "type": "string"
+          },
+          "gateway": {
+            "type": "string"
+          },
+          "indicatorInfo": {
+            "$ref": "#/components/schemas/IndicatorInfo"
+          },
           "additionalData": {
             "type": "object",
             "additionalProperties": {
               "type": "object"
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "SWITCH",
+              "UNKNOWN",
+              "ACCESS_POINT"
+            ]
+          }
+        }
+      },
+      "ReasonCode": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         }
